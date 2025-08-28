@@ -19,7 +19,7 @@ return new class extends Migration
             $table->enum('role', ['admin', 'member', 'viewer'])->default('member');
             $table->timestamp('expires_at');
             $table->timestamps();
-            
+
             $table->unique(['team_id', 'email']);
         });
     }

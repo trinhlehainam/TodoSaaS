@@ -83,4 +83,47 @@ class Team extends Model
     {
         $this->members()->updateExistingPivot($user->id, ['role' => $role->value]);
     }
+
+    /**
+     * Get all tasks for the team.
+     */
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+
+    /**
+     * Get pending tasks for the team.
+     */
+    public function pendingTasks(): HasMany
+    {
+        return $this->tasks()->where('status', 'pending');
+    }
+
+    /**
+     * Get in-progress tasks for the team.
+     */
+    public function inProgressTasks(): HasMany
+    {
+        return $this->tasks()->where('status', 'in_progress');
+    }
+
+    /**
+     * Get completed tasks for the team.
+     */
+    public function completedTasks(): HasMany
+    {
+        return $this->tasks()->where('status', 'completed');
+    }
+
+    /**
+     * Get overdue tasks for the team.
+     */
+    public function overdueTasks(): HasMany
+    {
+        return $this->tasks()
+            ->whereNull('completed_at')
+            ->whereNotNull('due_date')
+            ->where('due_date', '<', now());
+    }
 }

@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('team_invitations', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('teams', function (Blueprint $table) {
+            $table->boolean('personal_team')->default(false)->after('owner_id');
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('team_invitations');
+        Schema::table('teams', function (Blueprint $table) {
+            $table->dropColumn('personal_team');
+        });
     }
 };

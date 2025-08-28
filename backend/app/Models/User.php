@@ -11,6 +11,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
+/**
+ * @method static User|null find($id, $columns = ['*'])
+ * @method static User findOrFail($id, $columns = ['*'])
+ * @method static User create(array $attributes = [])
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -101,5 +106,21 @@ class User extends Authenticatable
     public function personalTeam(): ?Team
     {
         return $this->ownedTeams()->where('personal_team', true)->first();
+    }
+
+    /**
+     * Get the tasks assigned to the user.
+     */
+    public function assignedTasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+
+    /**
+     * Get the tasks assigned to the user in a specific team.
+     */
+    public function tasksInTeam(Team $team): HasMany
+    {
+        return $this->assignedTasks()->where('team_id', $team->id);
     }
 }

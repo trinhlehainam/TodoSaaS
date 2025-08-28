@@ -21,7 +21,7 @@ class TeamFactory extends Factory
         return [
             'name' => $name,
             'slug' => Str::slug($name),
-            'description' => fake()->catchPhrase(),
+            'description' => fake()->sentence(),
             'owner_id' => User::factory(),
             'personal_team' => false,
             'settings' => [
@@ -34,7 +34,7 @@ class TeamFactory extends Factory
     public function personal(): static
     {
         return $this->state(function (array $attributes) {
-            $owner = User::find($attributes['owner_id']) ?? User::factory()->create();
+            $owner = User::query()->find($attributes['owner_id']) ?? User::factory()->create();
 
             return [
                 'name' => $owner->name."'s Team",
@@ -48,6 +48,11 @@ class TeamFactory extends Factory
         });
     }
 
+    /**
+     * Set custom settings for the team.
+     *
+     * @param  array<string, mixed>  $settings
+     */
     public function withSettings(array $settings): static
     {
         return $this->state(fn (array $attributes) => [
