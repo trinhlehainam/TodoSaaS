@@ -21,7 +21,7 @@ class TeamInvitationModelTest extends TestCase
         $team = Team::factory()->create();
         $inviter = User::factory()->create();
 
-        $invitation = TeamInvitation::create([
+        $invitation = TeamInvitation::query()->create([
             'team_id' => $team->id,
             'email' => 'test@example.com',
             'role' => TeamRole::Member->value,
@@ -43,7 +43,7 @@ class TeamInvitationModelTest extends TestCase
         $team = Team::factory()->create();
         $inviter = User::factory()->create();
 
-        $invitation = TeamInvitation::create([
+        $invitation = TeamInvitation::query()->create([
             'team_id' => $team->id,
             'email' => 'test@example.com',
             'role' => TeamRole::Member->value,
@@ -104,13 +104,13 @@ class TeamInvitationModelTest extends TestCase
         ]);
 
         $this->assertFalse($team->hasUser($user));
-        $this->assertCount(1, TeamInvitation::all());
+        $this->assertCount(1, TeamInvitation::query()->get());
 
         $invitation->accept($user);
 
         $this->assertTrue($team->fresh()->hasUser($user));
         $this->assertEquals(TeamRole::Admin, $team->fresh()->userRole($user));
-        $this->assertCount(0, TeamInvitation::all());
+        $this->assertCount(0, TeamInvitation::query()->get());
     }
 
     /**
@@ -136,11 +136,11 @@ class TeamInvitationModelTest extends TestCase
     {
         $invitation = TeamInvitation::factory()->create();
 
-        $this->assertCount(1, TeamInvitation::all());
+        $this->assertCount(1, TeamInvitation::query()->get());
 
         $invitation->reject();
 
-        $this->assertCount(0, TeamInvitation::all());
+        $this->assertCount(0, TeamInvitation::query()->get());
     }
 
     /**
@@ -176,7 +176,7 @@ class TeamInvitationModelTest extends TestCase
         ]);
 
         $this->assertCount(3, $team->invitations);
-        $this->assertCount(3, TeamInvitation::where('team_id', $team->id)->get());
+        $this->assertCount(3, TeamInvitation::query()->where('team_id', $team->id)->get());
     }
 
     /**

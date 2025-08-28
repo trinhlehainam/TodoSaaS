@@ -56,6 +56,9 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * @return BelongsTo<Team, User>
+     */
     public function currentTeam(): BelongsTo
     {
         return $this->belongsTo(Team::class, 'current_team_id');
@@ -69,17 +72,26 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    /**
+     * @return HasMany<Team>
+     */
     public function ownedTeams(): HasMany
     {
         return $this->hasMany(Team::class, 'owner_id');
     }
 
+    /**
+     * @return HasMany<TeamInvitation>
+     */
     public function teamInvitations(): HasMany
     {
         return $this->hasMany(TeamInvitation::class, 'invited_by');
     }
 
-    public function allTeams()
+    /**
+     * @return \Illuminate\Support\Collection<int, Team>
+     */
+    public function allTeams(): \Illuminate\Support\Collection
     {
         return $this->teams->merge($this->ownedTeams);
     }
@@ -110,6 +122,8 @@ class User extends Authenticatable
 
     /**
      * Get the tasks assigned to the user.
+     *
+     * @return HasMany<Task>
      */
     public function assignedTasks(): HasMany
     {

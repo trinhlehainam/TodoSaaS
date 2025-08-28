@@ -28,11 +28,17 @@ class TeamMember extends Pivot
         ];
     }
 
+    /**
+     * @return BelongsTo<Team, TeamMember>
+     */
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }
 
+    /**
+     * @return BelongsTo<User, TeamMember>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

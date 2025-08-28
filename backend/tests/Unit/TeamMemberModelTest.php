@@ -21,7 +21,7 @@ class TeamMemberModelTest extends TestCase
         $team = Team::factory()->create();
         $user = User::factory()->create();
 
-        $teamMember = TeamMember::create([
+        $teamMember = TeamMember::query()->create([
             'team_id' => $team->id,
             'user_id' => $user->id,
             'role' => TeamRole::Admin->value,
@@ -206,7 +206,7 @@ class TeamMemberModelTest extends TestCase
             ]);
         }
 
-        $this->assertCount(3, TeamMember::where('team_id', $team->id)->get());
+        $this->assertCount(3, TeamMember::query()->where('team_id', $team->id)->get());
     }
 
     /**
@@ -224,6 +224,6 @@ class TeamMemberModelTest extends TestCase
             ]);
         }
 
-        $this->assertCount(3, TeamMember::where('user_id', $user->id)->get());
+        $this->assertCount(3, TeamMember::query()->where('user_id', $user->id)->get());
     }
 }

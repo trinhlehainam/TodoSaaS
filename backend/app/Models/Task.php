@@ -58,6 +58,8 @@ class Task extends Model
 
     /**
      * Get the team that owns the task.
+     *
+     * @return BelongsTo<Team, Task>
      */
     public function team(): BelongsTo
     {
@@ -66,6 +68,8 @@ class Task extends Model
 
     /**
      * Get the user assigned to the task.
+     *
+     * @return BelongsTo<User, Task>
      */
     public function assignee(): BelongsTo
     {
@@ -74,40 +78,55 @@ class Task extends Model
 
     /**
      * Scope a query to only include pending tasks.
+     *
+     * @param  Builder<Task>  $query
+     * @return Builder<Task>
      */
-    public function scopePending($query)
+    public function scopePending(Builder $query): Builder
     {
         return $query->where('status', TaskStatus::Pending);
     }
 
     /**
      * Scope a query to only include in-progress tasks.
+     *
+     * @param  Builder<Task>  $query
+     * @return Builder<Task>
      */
-    public function scopeInProgress($query)
+    public function scopeInProgress(Builder $query): Builder
     {
         return $query->where('status', TaskStatus::InProgress);
     }
 
     /**
      * Scope a query to only include completed tasks.
+     *
+     * @param  Builder<Task>  $query
+     * @return Builder<Task>
      */
-    public function scopeCompleted($query)
+    public function scopeCompleted(Builder $query): Builder
     {
         return $query->where('status', TaskStatus::Completed);
     }
 
     /**
      * Scope a query to only include high priority tasks.
+     *
+     * @param  Builder<Task>  $query
+     * @return Builder<Task>
      */
-    public function scopeHighPriority($query)
+    public function scopeHighPriority(Builder $query): Builder
     {
         return $query->where('priority', TaskPriority::High);
     }
 
     /**
      * Scope a query to only include overdue tasks.
+     *
+     * @param  Builder<Task>  $query
+     * @return Builder<Task>
      */
-    public function scopeOverdue($query)
+    public function scopeOverdue(Builder $query): Builder
     {
         return $query->whereNull('completed_at')
             ->whereNotNull('due_date')

@@ -30,11 +30,17 @@ class Team extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<User, Team>
+     */
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
 
+    /**
+     * @return BelongsToMany<User>
+     */
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'team_members')
@@ -43,11 +49,17 @@ class Team extends Model
             ->withTimestamps();
     }
 
+    /**
+     * @return HasMany<TeamMember>
+     */
     public function teamMembers(): HasMany
     {
         return $this->hasMany(TeamMember::class);
     }
 
+    /**
+     * @return HasMany<TeamInvitation>
+     */
     public function invitations(): HasMany
     {
         return $this->hasMany(TeamInvitation::class);
@@ -86,6 +98,8 @@ class Team extends Model
 
     /**
      * Get all tasks for the team.
+     *
+     * @return HasMany<Task>
      */
     public function tasks(): HasMany
     {
@@ -94,6 +108,8 @@ class Team extends Model
 
     /**
      * Get pending tasks for the team.
+     *
+     * @return HasMany<Task>
      */
     public function pendingTasks(): HasMany
     {
@@ -102,6 +118,8 @@ class Team extends Model
 
     /**
      * Get in-progress tasks for the team.
+     *
+     * @return HasMany<Task>
      */
     public function inProgressTasks(): HasMany
     {
@@ -110,6 +128,8 @@ class Team extends Model
 
     /**
      * Get completed tasks for the team.
+     *
+     * @return HasMany<Task>
      */
     public function completedTasks(): HasMany
     {
@@ -118,6 +138,8 @@ class Team extends Model
 
     /**
      * Get overdue tasks for the team.
+     *
+     * @return HasMany<Task>
      */
     public function overdueTasks(): HasMany
     {

@@ -41,11 +41,17 @@ class TeamInvitation extends Model
         });
     }
 
+    /**
+     * @return BelongsTo<Team, TeamInvitation>
+     */
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }
 
+    /**
+     * @return BelongsTo<User, TeamInvitation>
+     */
     public function inviter(): BelongsTo
     {
         return $this->belongsTo(User::class, 'invited_by');

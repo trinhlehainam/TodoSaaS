@@ -23,7 +23,7 @@ class TeamModelTest extends TestCase
     {
         $owner = User::factory()->create();
 
-        $team = Team::create([
+        $team = Team::query()->create([
             'name' => 'Test Team',
             'slug' => 'test-team',
             'description' => 'Test Description',
