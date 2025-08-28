@@ -66,7 +66,7 @@ class Team extends Model
 
         $member = $this->teamMembers()->where('user_id', $user->id)->first();
 
-        return $member ? TeamRole::from($member->role) : null;
+        return $member ? $member->role : null;
     }
 
     public function addMember(User $user, TeamRole $role = TeamRole::Member): void

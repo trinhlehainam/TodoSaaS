@@ -33,18 +33,30 @@ class TeamFactory extends Factory
 
     public function personal(): static
     {
-        return $this->state(function (array $attributes) {
-            $owner = User::query()->find($attributes['owner_id']) ?? User::factory()->create();
-
-            return [
-                'name' => $owner->name."'s Team",
-                'slug' => Str::slug($owner->name.'-team'),
-                'personal_team' => true,
-                'settings' => [
-                    'allow_invitations' => false,
-                    'visibility' => 'private',
-                ],
-            ];
+        return $this->state(fn (array $attributes) => [
+            'personal_team' => true,
+            'settings' => [
+                'allow_invitations' => false,
+                'visibility' => 'private',
+            ],
+        ])->afterMaking(function (Team $team) {
+            if ($team->owner_id) {
+                $owner = User::find($team->owner_id);
+                if ($owner) {
+                    $team->name = $owner->name."'s Team";
+                    $team->slug = Str::slug($owner->name.'-team');
+                }
+            }
+        })->afterCreating(function (Team $team) {
+            if ($team->owner_id) {
+                $owner = User::find($team->owner_id);
+                if ($owner && !str_contains($team->name, "'s Team")) {
+                    $team->update([
+                        'name' => $owner->name."'s Team",
+                        'slug' => Str::slug($owner->name.'-team'),
+                    ]);
+                }
+            }
         });
     }
 

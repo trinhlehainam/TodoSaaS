@@ -32,8 +32,12 @@ class TeamInvitation extends Model
     protected static function booted(): void
     {
         static::creating(function (TeamInvitation $invitation) {
-            $invitation->token = Str::random(32);
-            $invitation->expires_at = now()->addDays(7);
+            if (! $invitation->token) {
+                $invitation->token = Str::random(32);
+            }
+            if (! $invitation->expires_at) {
+                $invitation->expires_at = now()->addDays(7);
+            }
         });
     }
 
