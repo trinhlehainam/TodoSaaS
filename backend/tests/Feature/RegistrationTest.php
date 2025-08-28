@@ -7,10 +7,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
 use Tests\TestCase;
 
+/**
+ * Test suite for user registration functionality.
+ */
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Test that registration endpoint exists and validates required fields.
+     */
     public function test_registration_endpoint_exists(): void
     {
         if (! Features::enabled(Features::registration())) {
@@ -24,6 +30,9 @@ class RegistrationTest extends TestCase
             ->assertJsonValidationErrors(['name', 'email', 'password']);
     }
 
+    /**
+     * Test that new users can successfully register.
+     */
     public function test_new_users_can_register(): void
     {
         if (! Features::enabled(Features::registration())) {
@@ -46,6 +55,9 @@ class RegistrationTest extends TestCase
         ]);
     }
 
+    /**
+     * Test that users cannot register with an existing email.
+     */
     public function test_users_cannot_register_with_existing_email(): void
     {
         if (! Features::enabled(Features::registration())) {
@@ -65,6 +77,9 @@ class RegistrationTest extends TestCase
             ->assertJsonValidationErrors('email');
     }
 
+    /**
+     * Test that password confirmation must match password.
+     */
     public function test_users_cannot_register_with_mismatched_passwords(): void
     {
         if (! Features::enabled(Features::registration())) {
@@ -82,6 +97,9 @@ class RegistrationTest extends TestCase
             ->assertJsonValidationErrors('password');
     }
 
+    /**
+     * Test that weak passwords are rejected.
+     */
     public function test_users_cannot_register_with_weak_password(): void
     {
         if (! Features::enabled(Features::registration())) {

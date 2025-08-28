@@ -4,13 +4,18 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Fortify\Features;
 use Tests\TestCase;
 
+/**
+ * Test suite for user authentication functionality.
+ */
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Test that users can authenticate with valid credentials.
+     */
     public function test_users_can_authenticate(): void
     {
         $user = User::factory()->create();
@@ -24,6 +29,9 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /**
+     * Test that users cannot authenticate with invalid password.
+     */
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
         $user = User::factory()->create();
@@ -37,6 +45,9 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(422);
     }
 
+    /**
+     * Test that authenticated users can logout.
+     */
     public function test_users_can_logout(): void
     {
         $user = User::factory()->create();
